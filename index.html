@@ -35,6 +35,50 @@
               <span class="button-text">Break</span>
             </button>
           </div>
+
+          <section id="shift-selector" class="shift-selector" aria-label="Current shift selection" hidden>
+            <p class="selector-label">Current Shift</p>
+            <div id="shift-options" class="shift-options" role="listbox" aria-label="Available shifts">
+              <button
+                type="button"
+                class="shift-option"
+                data-shift-name="Morning Shift"
+                data-shift-time="06:00 AM - 03:00 PM"
+                role="option"
+                aria-selected="false"
+              >
+                <span class="shift-name">Morning Shift</span>
+                <span class="shift-time">06:00 AM - 03:00 PM</span>
+              </button>
+              <button
+                type="button"
+                class="shift-option"
+                data-shift-name="General Shift"
+                data-shift-time="09:00 AM - 06:00 PM"
+                role="option"
+                aria-selected="false"
+              >
+                <span class="shift-name">General Shift</span>
+                <span class="shift-time">09:00 AM - 06:00 PM</span>
+              </button>
+              <button
+                type="button"
+                class="shift-option"
+                data-shift-name="Evening Shift"
+                data-shift-time="02:00 PM - 11:00 PM"
+                role="option"
+                aria-selected="false"
+              >
+                <span class="shift-name">Evening Shift</span>
+                <span class="shift-time">02:00 PM - 11:00 PM</span>
+              </button>
+            </div>
+
+            <button id="proceed-shift" type="button" class="proceed-button" disabled>
+              <span class="button-icon" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+              <span class="button-text">Proceed to Scan</span>
+            </button>
+          </section>
         </div>
       </section>
 
@@ -42,6 +86,7 @@
         <div class="screen-body">
           <header class="screen-header">
             <h2>Scan ID Card</h2>
+            <p id="scan-shift" class="screen-shift" hidden></p>
           </header>
 
           <div class="scanner-zone">
@@ -85,6 +130,7 @@
             <h2 id="employee-name">Aarav Sharma</h2>
             <p id="employee-id" class="employee-id">ID Number: EMP-1042</p>
             <p id="employee-role" class="employee-role">Department: Human Resources Manager</p>
+            <p id="verify-shift" class="employee-shift" hidden></p>
           </article>
 
           <button id="capture-photo" type="button" class="capture-button">
@@ -118,6 +164,7 @@
             <div class="summary-content">
               <p id="summary-name" class="summary-name">Aarav Sharma</p>
               <p id="summary-time" class="summary-time">08:58 AM</p>
+              <p id="summary-shift" class="summary-shift" hidden></p>
             </div>
           </article>
 

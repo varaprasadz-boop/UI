@@ -92,7 +92,7 @@ button {
 
 .entry-layout {
   display: grid;
-  gap: 1.9rem;
+  gap: 1.4rem;
 }
 
 .entry-header h1 {
@@ -106,6 +106,103 @@ button {
 .entry-actions {
   display: grid;
   gap: 1rem;
+}
+
+.shift-selector {
+  border: 1px solid var(--color-border);
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+  border-radius: var(--radius-lg);
+  padding: 0.9rem;
+  display: grid;
+  gap: 0.75rem;
+  text-align: left;
+}
+
+.selector-label {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.shift-options {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.shift-option {
+  width: 100%;
+  min-height: 56px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fbfdff;
+  color: var(--color-navy);
+  padding: 0.66rem 0.75rem;
+  display: grid;
+  gap: 0.14rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.14s ease;
+}
+
+.shift-option:active {
+  transform: translateY(1px) scale(0.988);
+}
+
+.shift-option .shift-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.shift-option .shift-time {
+  color: var(--color-text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.shift-option.is-selected {
+  border-color: var(--color-green);
+  box-shadow: 0 8px 18px rgba(29, 185, 84, 0.16);
+  background: #f2fcf6;
+}
+
+.shift-option.is-current .shift-name::after {
+  content: "Current";
+  margin-left: 0.45rem;
+  border-radius: 999px;
+  padding: 0.12rem 0.42rem;
+  font-size: 0.67rem;
+  background: rgba(29, 185, 84, 0.18);
+  color: #0d7f39;
+  font-weight: 700;
+}
+
+.proceed-button {
+  min-height: 50px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--color-navy);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.56rem;
+  font-size: 0.96rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.14s ease, opacity 0.2s ease;
+}
+
+.proceed-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.proceed-button:not(:disabled):active {
+  transform: translateY(1px) scale(0.988);
 }
 
 .action-button {
@@ -172,6 +269,13 @@ button {
   font-size: 1.3rem;
   color: var(--color-navy);
   font-weight: 800;
+}
+
+.screen-shift {
+  margin: 0.5rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 .scanner-zone {
@@ -334,6 +438,13 @@ button {
   font-size: 0.95rem;
 }
 
+.employee-shift {
+  margin: 0.55rem 0 0;
+  color: var(--color-green-strong);
+  font-size: 0.91rem;
+  font-weight: 700;
+}
+
 .capture-button,
 .home-button {
   min-height: 52px;
@@ -433,6 +544,13 @@ button {
   color: var(--color-text-muted);
   font-size: 0.93rem;
   margin-top: 0.28rem;
+}
+
+.summary-shift {
+  margin-top: 0.28rem;
+  color: var(--color-green-strong);
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
 .home-button {
