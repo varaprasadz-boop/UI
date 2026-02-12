@@ -1,105 +1,154 @@
-const themeToggleButton = document.getElementById("theme-toggle");
-const taskForm = document.getElementById("task-form");
-const taskList = document.getElementById("task-list");
+const SCREEN_IDS = ["home", "scan", "verify", "confirm"];
+const ACTIONS = {
+  "check-in": "Check-In Confirmed",
+  "check-out": "Check-Out Confirmed",
+  break: "Break Logged",
+};
 
-const THEME_STORAGE_KEY = "web-ui-theme";
+const EMPLOYEE = {
+  name: "Aarav Sharma",
+  id: "EMP-1042",
+  role: "Department: Human Resources Manager",
+};
 
-function updateThemeButtonLabel(theme) {
-  if (!themeToggleButton) {
-    return;
+const screens = SCREEN_IDS.reduce((accumulator, id) => {
+  const element = document.getElementById(`screen-${id}`);
+  if (element) {
+    accumulator[id] = element;
+  }
+  return accumulator;
+}, {});
+
+const actionButtons = Array.from(document.querySelectorAll("[data-action]"));
+const cancelScanButton = document.getElementById("cancel-scan");
+const capturePhotoButton = document.getElementById("capture-photo");
+const backHomeButton = document.getElementById("back-home");
+const confirmationTitle = document.getElementById("confirmation-title");
+const summaryName = document.getElementById("summary-name");
+const summaryTime = document.getElementById("summary-time");
+const redirectNote = document.getElementById("redirect-note");
+const employeeName = document.getElementById("employee-name");
+const employeeId = document.getElementById("employee-id");
+const employeeRole = document.getElementById("employee-role");
+const successIcon = document.querySelector(".success-icon");
+
+let selectedAction = "check-in";
+let scanTimeoutId = 0;
+let redirectTimeoutId = 0;
+let redirectIntervalId = 0;
+
+function activateScreen(targetId) {
+  SCREEN_IDS.forEach((screenId) => {
+    const screen = screens[screenId];
+    if (!screen) {
+      return;
+    }
+
+    const isActive = screenId === targetId;
+    screen.classList.toggle("is-active", isActive);
+    screen.setAttribute("aria-hidden", String(!isActive));
+  });
+}
+
+function clearAllTimers() {
+  window.clearTimeout(scanTimeoutId);
+  window.clearTimeout(redirectTimeoutId);
+  window.clearInterval(redirectIntervalId);
+}
+
+function getCurrentTimeLabel() {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }).format(new Date());
+}
+
+function startRedirectCountdown() {
+  let secondsRemaining = 5;
+  redirectNote.textContent = `Redirecting in ${secondsRemaining}s...`;
+
+  redirectIntervalId = window.setInterval(() => {
+    secondsRemaining -= 1;
+    if (secondsRemaining > 0) {
+      redirectNote.textContent = `Redirecting in ${secondsRemaining}s...`;
+    }
+  }, 1000);
+
+  redirectTimeoutId = window.setTimeout(() => {
+    window.clearInterval(redirectIntervalId);
+    activateScreen("home");
+  }, 5000);
+}
+
+function showConfirmation() {
+  const title = ACTIONS[selectedAction] || ACTIONS["check-in"];
+  confirmationTitle.textContent = title;
+  summaryName.textContent = EMPLOYEE.name;
+  summaryTime.textContent = getCurrentTimeLabel();
+  redirectNote.textContent = "Redirecting in 5s...";
+
+  activateScreen("confirm");
+
+  if (successIcon) {
+    successIcon.style.animation = "none";
+    window.requestAnimationFrame(() => {
+      successIcon.style.animation = "";
+    });
   }
 
-  themeToggleButton.textContent = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+  startRedirectCountdown();
 }
 
-function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  updateThemeButtonLabel(theme);
+function startScanSequence(action) {
+  clearAllTimers();
+  selectedAction = action;
+  activateScreen("scan");
+  scanTimeoutId = window.setTimeout(() => {
+    activateScreen("verify");
+  }, 1700);
 }
 
-function getPreferredTheme() {
-  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
-  if (storedTheme === "dark" || storedTheme === "light") {
-    return storedTheme;
-  }
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+function initEmployeeCard() {
+  employeeName.textContent = EMPLOYEE.name;
+  employeeId.textContent = `ID Number: ${EMPLOYEE.id}`;
+  employeeRole.textContent = EMPLOYEE.role;
 }
 
-function createTaskElement(title, priority) {
-  const item = document.createElement("li");
-  item.className = "task-item";
+actionButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const action = button.dataset.action;
+    if (!action) {
+      return;
+    }
+    startScanSequence(action);
+  });
+});
 
-  const copy = document.createElement("div");
-  copy.className = "task-copy";
-
-  const taskTitle = document.createElement("strong");
-  taskTitle.textContent = title;
-
-  const badge = document.createElement("span");
-  badge.className = `badge ${priority.toLowerCase()}`;
-  badge.textContent = priority;
-
-  copy.append(taskTitle, badge);
-
-  const removeButton = document.createElement("button");
-  removeButton.type = "button";
-  removeButton.className = "task-remove";
-  removeButton.setAttribute("aria-label", `Remove task ${title}`);
-  removeButton.textContent = "Remove";
-
-  item.append(copy, removeButton);
-  return item;
-}
-
-if (themeToggleButton) {
-  const theme = getPreferredTheme();
-  applyTheme(theme);
-
-  themeToggleButton.addEventListener("click", () => {
-    const currentTheme = document.documentElement.getAttribute("data-theme");
-    const nextTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-    window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+if (cancelScanButton) {
+  cancelScanButton.addEventListener("click", () => {
+    clearAllTimers();
+    activateScreen("home");
   });
 }
 
-if (taskForm && taskList) {
-  taskForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const titleField = taskForm.elements.namedItem("taskTitle");
-    const priorityField = taskForm.elements.namedItem("taskPriority");
-    if (!(titleField instanceof HTMLInputElement) || !(priorityField instanceof HTMLSelectElement)) {
-      return;
-    }
-
-    const title = titleField.value.trim();
-    const priority = priorityField.value;
-    if (!title) {
-      titleField.focus();
-      return;
-    }
-
-    taskList.prepend(createTaskElement(title, priority));
-    titleField.value = "";
-    priorityField.value = "Medium";
-    titleField.focus();
+if (capturePhotoButton) {
+  capturePhotoButton.addEventListener("click", () => {
+    clearAllTimers();
+    showConfirmation();
   });
+}
 
-  taskList.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLButtonElement)) {
-      return;
-    }
-
-    if (!target.classList.contains("task-remove")) {
-      return;
-    }
-
-    const item = target.closest(".task-item");
-    if (item) {
-      item.remove();
-    }
+if (backHomeButton) {
+  backHomeButton.addEventListener("click", () => {
+    clearAllTimers();
+    activateScreen("home");
   });
+}
+
+initEmployeeCard();
+activateScreen("home");
+
+if (window.lucide && typeof window.lucide.createIcons === "function") {
+  window.lucide.createIcons();
 }
