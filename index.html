@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0B1F3A">
+  <title>BizHR - Attendance System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <main class="phone-stage" aria-label="BizHR attendance flow">
+      <section id="screen-home" class="screen is-active" data-screen="home" aria-hidden="false">
+        <div class="screen-center entry-layout">
+          <header class="entry-header">
+            <h1>BizHR - Attendance System</h1>
+          </header>
+
+          <div class="entry-actions" role="group" aria-label="Attendance actions">
+            <button type="button" class="action-button action-checkin" data-action="check-in">
+              <span class="button-icon" aria-hidden="true"><i data-lucide="log-in"></i></span>
+              <span class="button-text">Check In</span>
+            </button>
+
+            <button type="button" class="action-button action-checkout" data-action="check-out">
+              <span class="button-icon" aria-hidden="true"><i data-lucide="log-out"></i></span>
+              <span class="button-text">Check Out</span>
+            </button>
+
+            <button type="button" class="action-button action-break" data-action="break">
+              <span class="button-icon" aria-hidden="true"><i data-lucide="coffee"></i></span>
+              <span class="button-text">Break</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="screen-scan" class="screen" data-screen="scan" aria-hidden="true">
+        <div class="screen-body">
+          <header class="screen-header">
+            <h2>Scan ID Card</h2>
+          </header>
+
+          <div class="scanner-zone">
+            <div class="viewfinder" role="img" aria-label="Scanner viewfinder">
+              <span class="corner corner-tl" aria-hidden="true"></span>
+              <span class="corner corner-tr" aria-hidden="true"></span>
+              <span class="corner corner-bl" aria-hidden="true"></span>
+              <span class="corner corner-br" aria-hidden="true"></span>
+              <span class="scan-line" aria-hidden="true"></span>
+
+              <svg class="scanner-illustration" viewBox="0 0 200 200" aria-hidden="true">
+                <rect x="52" y="42" width="94" height="62" rx="10" fill="#E7EDF6" stroke="#97A8C5" stroke-width="3"></rect>
+                <circle cx="74" cy="63" r="8" fill="#1DB954" opacity="0.9"></circle>
+                <rect x="90" y="56" width="42" height="5" rx="2.5" fill="#6B7A90"></rect>
+                <rect x="90" y="67" width="34" height="5" rx="2.5" fill="#6B7A90" opacity="0.8"></rect>
+                <path d="M31 124c0-16 13-29 29-29h29c16 0 29 13 29 29v23H31v-23z" fill="#0B1F3A" opacity="0.92"></path>
+                <path d="M118 129h39c7 0 12 6 12 13v11h-51v-24z" fill="#0B1F3A" opacity="0.82"></path>
+                <path d="M108 113c6 0 11 4 13 10l7 20h-20z" fill="#10294C"></path>
+              </svg>
+            </div>
+
+            <p class="scan-instruction">Position your QR Code or Barcode inside the box.</p>
+          </div>
+
+          <footer class="scan-footer">
+            <button id="cancel-scan" type="button" class="outline-button">
+              <span class="button-icon" aria-hidden="true"><i data-lucide="x"></i></span>
+              <span class="button-text">Cancel</span>
+            </button>
+          </footer>
+        </div>
+      </section>
+
+      <section id="screen-verify" class="screen" data-screen="verify" aria-hidden="true">
+        <div class="screen-center verify-layout">
+          <article class="verify-card">
+            <div class="security-chip">
+              <i data-lucide="shield-check" aria-hidden="true"></i>
+              <span>Secure Verification</span>
+            </div>
+            <h2 id="employee-name">Aarav Sharma</h2>
+            <p id="employee-id" class="employee-id">ID Number: EMP-1042</p>
+            <p id="employee-role" class="employee-role">Department: Human Resources Manager</p>
+          </article>
+
+          <button id="capture-photo" type="button" class="capture-button">
+            <span class="button-icon" aria-hidden="true"><i data-lucide="camera"></i></span>
+            <span class="button-text">Capture Live Photo</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="screen-confirm" class="screen" data-screen="confirm" aria-hidden="true">
+        <div class="screen-center confirm-layout">
+          <div class="success-icon" aria-hidden="true">
+            <i data-lucide="check"></i>
+          </div>
+          <h2 id="confirmation-title">Check-In Confirmed</h2>
+
+          <article class="summary-card">
+            <div class="photo-frame" aria-hidden="true">
+              <svg viewBox="0 0 72 72" class="photo-art">
+                <defs>
+                  <linearGradient id="photoGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#D8E4F5"></stop>
+                    <stop offset="100%" stop-color="#B7C9E6"></stop>
+                  </linearGradient>
+                </defs>
+                <circle cx="36" cy="36" r="36" fill="url(#photoGradient)"></circle>
+                <circle cx="36" cy="28" r="12" fill="#0B1F3A" opacity="0.9"></circle>
+                <path d="M15 64c3-12 12-20 21-20s18 8 21 20" fill="#0B1F3A" opacity="0.82"></path>
+              </svg>
+            </div>
+            <div class="summary-content">
+              <p id="summary-name" class="summary-name">Aarav Sharma</p>
+              <p id="summary-time" class="summary-time">08:58 AM</p>
+            </div>
+          </article>
+
+          <button id="back-home" type="button" class="home-button">
+            <span class="button-icon" aria-hidden="true"><i data-lucide="house"></i></span>
+            <span class="button-text">Back to Home</span>
+          </button>
+
+          <p id="redirect-note" class="redirect-note">Redirecting in 5s...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="script.js"></script>
+</body>
+</html>
